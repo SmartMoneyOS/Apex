@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apex-trader"
+version = "0.1.0"
+description = "Apex: an adaptive, self-improving trading engine for Robinhood (crypto API + paper trading)"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+live = ["pynacl>=1.5"]          # Ed25519 request signing for the official Robinhood Crypto API
+stocks = ["robin_stocks>=3.0"]  # UNOFFICIAL stock API wrapper - read the warnings in brokers/robinhood_stocks.py
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+apex = "apex.main:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

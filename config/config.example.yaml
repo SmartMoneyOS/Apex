@@ -1,0 +1,34 @@
+# Apex configuration. Copy to config/config.yaml and edit.
+# config/config.yaml is gitignored so credentials never land in the repo.
+
+mode: paper                 # paper | live
+symbols: ["BTC-USD"]
+
+engine:
+  poll_seconds: 15          # live-mode quote polling interval
+  bars_per_day: 5760        # 15s bars -> used to annualize volatility
+  min_trade_value: 5.0      # skip rebalances smaller than this (USD)
+  rebalance_threshold: 0.02 # skip rebalance if drift < 2% of equity
+
+risk:
+  max_position_frac: 0.50   # never put more than 50% of equity in one symbol
+  target_vol_annual: 0.35   # volatility-targeted sizing (35% annualized)
+  daily_loss_limit_pct: 3.0 # flatten + halt for the day at -3%
+  max_drawdown_pct: 10.0    # flatten + PERMANENT halt at -10% from peak (kill switch)
+
+paper:
+  starting_cash: 10000.0
+  fee_bps: 10               # simulated fees (Robinhood crypto spread is real, model it)
+  slippage_bps: 5
+
+learning:
+  reward_halflife: 200      # bars; how fast the bandit forgets old performance
+  min_weight: 0.0           # strategies can be fully defunded
+
+robinhood:
+  # Official Robinhood Crypto Trading API (https://docs.robinhood.com/crypto/trading/)
+  # Generate an API key + Ed25519 keypair in the Robinhood app, then either put
+  # them here (config.yaml is gitignored) or export ROBINHOOD_API_KEY /
+  # ROBINHOOD_PRIVATE_KEY_B64 environment variables.
+  api_key: ""
+  private_key_b64: ""

@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+runs/
+config/config.yaml
+.env
+*.pem
+*.key
+APEX_KILL_SWITCH
