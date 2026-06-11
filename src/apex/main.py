@@ -125,6 +125,8 @@ def cli(argv: list[str] | None = None) -> int:
     bt.add_argument("--synthetic", action="store_true")
     bt.add_argument("--steps", type=int, default=5000)
     bt.add_argument("--seed", type=int, default=7)
+    bt.add_argument("--bars-per-day", type=int, default=5760,
+                    help="bars per day in the data (24 for hourly, 5760 for 15s)")
 
     sub.add_parser("paper", help="live quotes, simulated money (default mode)")
 
@@ -142,7 +144,8 @@ def cli(argv: list[str] | None = None) -> int:
                                  steps=args.steps, seed=args.seed)
         else:
             bt.error("need --csv or --synthetic")
-        print(json.dumps(run_backtest(feed, seed=args.seed), indent=2))
+        print(json.dumps(run_backtest(feed, seed=args.seed,
+                                      bars_per_day=args.bars_per_day), indent=2))
         return 0
 
     if args.cmd == "live" and not args.i_understand_the_risks:

@@ -60,6 +60,24 @@ apex live --i-understand-the-risks      # real money, Robinhood crypto
 Copy `config/config.example.yaml` to `config/config.yaml` (gitignored) and add
 your Robinhood Crypto API credentials for live quotes/trading.
 
+## Getting real history
+
+A real backtest needs real data. Fetch two years of hourly BTC candles from
+Coinbase's public API (no key required — run on your own machine, not in a
+sandboxed environment):
+
+```bash
+python scripts/fetch_btc_data.py --days 730 --out data/btc_1h.csv
+apex backtest --csv data/btc_1h.csv --bars-per-day 24
+```
+
+`--bars-per-day` tells the risk manager how to annualize volatility and when a
+"day" rolls over for the daily loss halt (24 for hourly bars, 5760 for 15s).
+
+A 50-bar sample of real BTC hourly closes lives in
+`data/samples/btc_recent_1h.csv` to keep the replay path tested against real
+market data — it is far too short to judge strategy performance.
+
 ## The promotion gate
 
 Apex is built to earn its way to real money, not to be trusted on day one:
